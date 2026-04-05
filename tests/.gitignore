@@ -1,0 +1,37 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environments (do not commit)
+.venv/
+venv/
+env/
+
+# Secrets / local config
+.env
+.env.*
+secrets.py
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Simulation outputs (can be large)
+*.npy
+*.npz
+*.hdf5
+*.h5
+*.pkl
+data/raw/
+results/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
