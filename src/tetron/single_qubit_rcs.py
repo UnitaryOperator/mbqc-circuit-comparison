@@ -289,7 +289,8 @@ class SingleQubitRCS:
         """
         Run one scaling point. Returns dict with:
             n, depth, qubits_mbqc, t_mbqc, t_direct, speedup,
-            tvd_mean, tvd_max, gates
+            tvd_mean, tvd_max, gates,
+            mbqc_counts, direct_counts
         """
         qc_mbqc, gates = self.build_mbqc_rcs(n_pairs, depth=depth)
         qc_direct      = self.build_direct_rcs(gates)
@@ -327,13 +328,15 @@ class SingleQubitRCS:
         return {
             'n': n_pairs,
             'depth': depth,
-            'qubits_mbqc': 2 * n_pairs,
-            't_mbqc':   t_mbqc,
-            't_direct': t_direct,
-            'speedup':  t_mbqc / t_direct if t_direct > 0 else float('inf'),
-            'tvd_mean': float(np.mean(tvds)),
-            'tvd_max':  float(np.max(tvds)),
-            'gates':    gates,
+            'qubits_mbqc':   2 * n_pairs,
+            't_mbqc':        t_mbqc,
+            't_direct':      t_direct,
+            'speedup':       t_mbqc / t_direct if t_direct > 0 else float('inf'),
+            'tvd_mean':      float(np.mean(tvds)),
+            'tvd_max':       float(np.max(tvds)),
+            'gates':         gates,
+            'mbqc_counts':   mbqc_data,
+            'direct_counts': direct_raw,
         }
 
     def sweep(self, n_list, depth=1, shots=512, verbose=True):

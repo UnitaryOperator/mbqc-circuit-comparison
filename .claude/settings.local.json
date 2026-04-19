@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python -c \"import json; nb=json.load\\(open\\('e:/git_repo/mbqc-circuit-comparison/src/tetron/mbqc_singlequbit_rcs.ipynb'\\)\\); [print\\(c['id'], repr\\(c['source'][:120]\\)\\) for c in nb['cells'] if 'subplots' in ''.join\\(c['source']\\)]\")",
+      "Bash(python -c ' *)",
+      "Bash(python -c \"import json; nb=json.load\\(open\\('src/tetron/mbqc_singlequbit_rcs.ipynb'\\)\\); [print\\(c.get\\('id','?'\\), '|', ''.join\\(c['source']\\)[:200]\\) for c in nb['cells'] if 'subplots\\(2' in ''.join\\(c['source']\\)]\")",
+      "Bash(python -c \"import json; nb=json.load\\(open\\('src/tetron/mbqc_singlequbit_rcs.ipynb'\\)\\); print\\(len\\(nb['cells']\\)\\)\")"
+    ]
+  }
+}
