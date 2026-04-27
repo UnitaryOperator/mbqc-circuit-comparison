@@ -1,0 +1,1943 @@
+{
+  "source_file": "circuit_n12_m14_s6_e6_pEFGH.py",
+  "is_patch": false,
+  "n_qubits": 12,
+  "n_cycles": 14,
+  "seed": 6,
+  "elided": 6,
+  "pattern": "EFGH",
+  "theta_ideal": 1.5707963267948966,
+  "phi_ideal": 0.5235987755982988,
+  "qubit_map": {
+    "3,3": 11,
+    "3,4": 4,
+    "3,5": 3,
+    "3,6": 9,
+    "4,3": 8,
+    "4,4": 1,
+    "4,5": 2,
+    "4,6": 10,
+    "5,3": 7,
+    "5,4": 5,
+    "5,5": 6,
+    "5,6": 12
+  },
+  "qubit_order": [
+    11,
+    4,
+    3,
+    9,
+    8,
+    1,
+    2,
+    10,
+    7,
+    5,
+    6,
+    12
+  ],
+  "efgh_tetron_pairs": {
+    "E": [
+      [
+        4,
+        3
+      ],
+      [
+        1,
+        2
+      ],
+      [
+        5,
+        6
+      ]
+    ],
+    "F": [
+      [
+        11,
+        4
+      ],
+      [
+        3,
+        9
+      ],
+      [
+        8,
+        1
+      ],
+      [
+        2,
+        10
+      ],
+      [
+        7,
+        5
+      ],
+      [
+        6,
+        12
+      ]
+    ],
+    "G": [
+      [
+        8,
+        7
+      ],
+      [
+        1,
+        5
+      ],
+      [
+        2,
+        6
+      ],
+      [
+        10,
+        12
+      ]
+    ],
+    "H": [
+      [
+        11,
+        8
+      ],
+      [
+        4,
+        1
+      ],
+      [
+        3,
+        2
+      ],
+      [
+        9,
+        10
+      ]
+    ]
+  },
+  "moments": [
+    {
+      "depth": 0,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 1,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            4,
+            3
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5862983338115253,
+          "phi_original": 0.5200148508319427
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            5,
+            6
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5346175385256955,
+          "phi_original": 0.5131039467233695
+        }
+      ]
+    },
+    {
+      "depth": 2,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 3,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            9
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.541977006124425,
+          "phi_original": 0.6073798124875975
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            1
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5138652502397498,
+          "phi_original": 0.47710618607286504
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            2,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5849169442855044,
+          "phi_original": 0.54346233613361
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            7,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5398075246432927,
+          "phi_original": 0.5174515645943538
+        }
+      ]
+    },
+    {
+      "depth": 4,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 5,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            7
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.589821065740506,
+          "phi_original": 0.5045391214115686
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            1,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5472406430590444,
+          "phi_original": 0.5216932173558055
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            10,
+            12
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5707871303628709,
+          "phi_original": 0.5176678491729374
+        }
+      ]
+    },
+    {
+      "depth": 6,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 7,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            11,
+            8
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.4668587973263782,
+          "phi_original": 0.4976074601121169
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            2
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.603651215218248,
+          "phi_original": 0.46649538437100246
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            9,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.6160334279232749,
+          "phi_original": 0.4353897326147861
+        }
+      ]
+    },
+    {
+      "depth": 8,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 9,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            4,
+            3
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5862983338115253,
+          "phi_original": 0.5200148508319427
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            5,
+            6
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5346175385256955,
+          "phi_original": 0.5131039467233695
+        }
+      ]
+    },
+    {
+      "depth": 10,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 11,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            11,
+            4
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.2947043217999283,
+          "phi_original": 0.4859467238431821
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            9
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.541977006124425,
+          "phi_original": 0.6073798124875975
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            1
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5138652502397498,
+          "phi_original": 0.47710618607286504
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            2,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5849169442855044,
+          "phi_original": 0.54346233613361
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            7,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5398075246432927,
+          "phi_original": 0.5174515645943538
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            6,
+            12
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.4593314109380113,
+          "phi_original": 0.5230636172671492
+        }
+      ]
+    },
+    {
+      "depth": 12,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 13,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            7
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.589821065740506,
+          "phi_original": 0.5045391214115686
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            1,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5472406430590444,
+          "phi_original": 0.5216932173558055
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            2,
+            6
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5124128267683938,
+          "phi_original": 0.5133142626030278
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            10,
+            12
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5707871303628709,
+          "phi_original": 0.5176678491729374
+        }
+      ]
+    },
+    {
+      "depth": 14,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            10
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 15,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            11,
+            8
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.4668587973263782,
+          "phi_original": 0.4976074601121169
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            4,
+            1
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.47511091993527,
+          "phi_original": 0.538612093835262
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            2
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.603651215218248,
+          "phi_original": 0.46649538437100246
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            9,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.6160334279232749,
+          "phi_original": 0.4353897326147861
+        }
+      ]
+    },
+    {
+      "depth": 16,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 17,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            4,
+            3
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5862983338115253,
+          "phi_original": 0.5200148508319427
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            1,
+            2
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5289739216684795,
+          "phi_original": 0.5055240639761313
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            5,
+            6
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5346175385256955,
+          "phi_original": 0.5131039467233695
+        }
+      ]
+    },
+    {
+      "depth": 18,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            7
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 19,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            11,
+            4
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.2947043217999283,
+          "phi_original": 0.4859467238431821
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            9
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.541977006124425,
+          "phi_original": 0.6073798124875975
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            1
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5138652502397498,
+          "phi_original": 0.47710618607286504
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            2,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5849169442855044,
+          "phi_original": 0.54346233613361
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            7,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5398075246432927,
+          "phi_original": 0.5174515645943538
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            6,
+            12
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.4593314109380113,
+          "phi_original": 0.5230636172671492
+        }
+      ]
+    },
+    {
+      "depth": 20,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 21,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            7
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.589821065740506,
+          "phi_original": 0.5045391214115686
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            1,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5472406430590444,
+          "phi_original": 0.5216932173558055
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            2,
+            6
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5124128267683938,
+          "phi_original": 0.5133142626030278
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            10,
+            12
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5707871303628709,
+          "phi_original": 0.5176678491729374
+        }
+      ]
+    },
+    {
+      "depth": 22,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 23,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            11,
+            8
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.4668587973263782,
+          "phi_original": 0.4976074601121169
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            4,
+            1
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.47511091993527,
+          "phi_original": 0.538612093835262
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            2
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.603651215218248,
+          "phi_original": 0.46649538437100246
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            9,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.6160334279232749,
+          "phi_original": 0.4353897326147861
+        }
+      ]
+    },
+    {
+      "depth": 24,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 25,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            4,
+            3
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5862983338115253,
+          "phi_original": 0.5200148508319427
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            1,
+            2
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5289739216684795,
+          "phi_original": 0.5055240639761313
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            5,
+            6
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5346175385256955,
+          "phi_original": 0.5131039467233695
+        }
+      ]
+    },
+    {
+      "depth": 26,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            6
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            12
+          ]
+        }
+      ]
+    },
+    {
+      "depth": 27,
+      "gates": [
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            11,
+            4
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.2947043217999283,
+          "phi_original": 0.4859467238431821
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            3,
+            9
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.541977006124425,
+          "phi_original": 0.6073798124875975
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            8,
+            1
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5138652502397498,
+          "phi_original": 0.47710618607286504
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            2,
+            10
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5849169442855044,
+          "phi_original": 0.54346233613361
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            7,
+            5
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.5398075246432927,
+          "phi_original": 0.5174515645943538
+        },
+        {
+          "gate": "FSimGate",
+          "qubits": [
+            6,
+            12
+          ],
+          "theta": 1.5707963267948966,
+          "phi": 0.5235987755982988,
+          "theta_original": 1.4593314109380113,
+          "phi_original": 0.5230636172671492
+        }
+      ]
+    },
+    {
+      "depth": 28,
+      "gates": [
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            4
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            3
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            1
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            5
+          ]
+        },
+        {
+          "gate": "sqrtX",
+          "qubits": [
+            12
+          ]
+        },
+        {
+          "gate": "sqrtY",
+          "qubits": [
+            11
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            9
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            8
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            2
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            10
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            7
+          ]
+        },
+        {
+          "gate": "sqrtW",
+          "qubits": [
+            6
+          ]
+        }
+      ]
+    }
+  ],
+  "n_moments_raw": 57,
+  "n_moments": 29,
+  "n_fsim": 54,
+  "n_single_qubit": 180,
+  "unmapped_qubits": []
+}
