@@ -237,3 +237,55 @@ def measure_x(
     outcome = forced_outcome if forced_outcome is not None else _sample_outcome(rho, pauli_str)
     rho_post = _project(rho, pauli_str, outcome)
     return rho_post, outcome
+
+
+def measure_y(
+    rho: DensityMatrix,
+    i: int,
+    forced_outcome: int | None = None,
+) -> tuple[DensityMatrix, int]:
+    """
+    Single-qubit Y measurement on qubit i.
+
+    Used in single-qubit Clifford gate synthesis, e.g. the YI step of the
+    H gate teleportation sequence (XI → YI → ZY → XI).
+
+    Returns
+    -------
+    (rho_post, outcome) : (DensityMatrix, int)
+    """
+    n = rho.num_qubits
+    ops = ["I"] * n
+    ops[n - 1 - i] = "Y"
+    pauli_str = "".join(ops)
+    outcome = forced_outcome if forced_outcome is not None else _sample_outcome(rho, pauli_str)
+    rho_post = _project(rho, pauli_str, outcome)
+    return rho_post, outcome
+
+
+def measure_zy(
+    rho: DensityMatrix,
+    i: int,
+    j: int,
+    forced_outcome: int | None = None,
+) -> tuple[DensityMatrix, int]:
+    """
+    Joint ZY parity measurement: Z on qubit i, Y on qubit j.
+
+    This is the entangling step of the H gate teleportation sequence.
+    Calling convention matches the gate decomposition:
+        i = ancilla qubit (Z side)
+        j = data qubit    (Y side)
+
+    Returns
+    -------
+    (rho_post, outcome) : (DensityMatrix, int)
+    """
+    n = rho.num_qubits
+    ops = ["I"] * n
+    ops[n - 1 - i] = "Z"
+    ops[n - 1 - j] = "Y"
+    pauli_str = "".join(ops)
+    outcome = forced_outcome if forced_outcome is not None else _sample_outcome(rho, pauli_str)
+    rho_post = _project(rho, pauli_str, outcome)
+    return rho_post, outcome
