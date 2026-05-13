@@ -1,0 +1,8 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python src/tetron/qubit_mapping.py)",
+      "PowerShell(cd \"d:\\\\git repo\\\\mbqc-circuit-comparison\"; python src/tetron/qubit_mapping.py; Write-Host \"Exit: $LASTEXITCODE\")"
+    ]
+  }
+}

@@ -3,15 +3,16 @@
 # ============================================================
 #
 # Physical device: 8-row × 3-column tetron array (T1 … T24)
+# Center-out indexing (T1 at center, spiraling outward):
 #
-#   T1   T2   T3       anc   8   anc
-#   T4   T5   T6        11  anc    7
-#   T7   T8   T9       anc   1   anc
-#   T10  T11  T12        4  anc    5
-#   T13  T14  T15      anc   2   anc
-#   T16  T17  T18        3  anc    6
-#   T19  T20  T21      anc  10   anc
-#   T22  T23  T24        9  anc   12
+#   T21  T16  T17      anc   8   anc
+#   T15  T10  T11       11  anc    7
+#   T9   T2   T3       anc   1   anc
+#   T8   T1   T4         4  anc    5
+#   T7   T6   T5       anc   2   anc
+#   T14  T13  T12        3  anc    6
+#   T20  T19  T18      anc  10   anc
+#   T24  T23  T22        9  anc   12
 #
 # Qiskit 0-based index: q[i] = T_{i+1},  so T_k -> q[k-1]
 #
@@ -50,18 +51,18 @@ GRID_TO_LOGICAL = {
 # Qiskit index = site - 1.
 
 LOGICAL_TO_TETRON_SITE = {
-     8:  2,
-    11:  4,
-     7:  6,
-     1:  8,
-     4: 10,
-     5: 12,
-     2: 14,
-     3: 16,
-     6: 18,
-    10: 20,
-     9: 22,
-    12: 24,
+     8: 16,
+    11: 15,
+     7: 11,
+     1:  2,
+     4:  8,
+     5:  4,
+     2:  6,
+     3: 14,
+     6: 12,
+    10: 19,
+     9: 24,
+    12: 22,
 }
 
 # ============================================================
@@ -72,29 +73,29 @@ LOGICAL_TO_TETRON_SITE = {
 # qubits L9 and L12, which have no ancilla below, T23 (row7,
 # col1) is the nearest unoccupied ancilla in the same row.
 #
-#   L8  (T2,  r0,c1) -> T5  (r1,c1)
-#   L11 (T4,  r1,c0) -> T7  (r2,c0)
-#   L7  (T6,  r1,c2) -> T9  (r2,c2)
-#   L1  (T8,  r2,c1) -> T11 (r3,c1)
-#   L4  (T10, r3,c0) -> T13 (r4,c0)
-#   L5  (T12, r3,c2) -> T15 (r4,c2)
-#   L2  (T14, r4,c1) -> T17 (r5,c1)
-#   L3  (T16, r5,c0) -> T19 (r6,c0)
-#   L6  (T18, r5,c2) -> T21 (r6,c2)
-#   L10 (T20, r6,c1) -> T23 (r7,c1)
-#   L9  (T22, r7,c0) -> T23 (r7,c1)  [same row, no below]
-#   L12 (T24, r7,c2) -> T23 (r7,c1)  [same row, no below]
+#   L8  (T16, r0,c1) -> T10 (r1,c1)
+#   L11 (T15, r1,c0) -> T9  (r2,c0)
+#   L7  (T11, r1,c2) -> T3  (r2,c2)
+#   L1  (T2,  r2,c1) -> T1  (r3,c1)
+#   L4  (T8,  r3,c0) -> T7  (r4,c0)
+#   L5  (T4,  r3,c2) -> T5  (r4,c2)
+#   L2  (T6,  r4,c1) -> T13 (r5,c1)
+#   L3  (T14, r5,c0) -> T20 (r6,c0)
+#   L6  (T12, r5,c2) -> T18 (r6,c2)
+#   L10 (T19, r6,c1) -> T23 (r7,c1)
+#   L9  (T24, r7,c0) -> T23 (r7,c1)  [same row, no below]
+#   L12 (T22, r7,c2) -> T23 (r7,c1)  [same row, no below]
 
 LOGICAL_TO_SQ_ANCILLA_SITE = {
-     8:  5,
-    11:  7,
-     7:  9,
-     1: 11,
-     4: 13,
-     5: 15,
-     2: 17,
-     3: 19,
-     6: 21,
+     8: 10,
+    11:  9,
+     7:  3,
+     1:  1,
+     4:  7,
+     5:  5,
+     2: 13,
+     3: 20,
+     6: 18,
     10: 23,
      9: 23,
     12: 23,
@@ -108,30 +109,30 @@ LOGICAL_TO_SQ_ANCILLA_SITE = {
 # Keys are sorted tuples so (a,b) and (b,a) are the same edge.
 
 EDGE_TO_ANCILLA_SITE = {
-    # H-layer (left-diagonal): top-left ancilla between the pair
-    tuple(sorted(( 8, 11))): 1,
-    tuple(sorted(( 1,  4))): 7,
-    tuple(sorted(( 2,  3))): 13,
-    tuple(sorted(( 9, 10))): 19,
+    # H-layer / left-diagonal: use upper-left outer ancilla
+    tuple(sorted(( 8, 11))): 21,
+    tuple(sorted(( 1,  4))):  9,
+    tuple(sorted(( 2,  3))):  7,
+    tuple(sorted(( 9, 10))): 20,
 
-    # G-layer (right-diagonal): top-right ancilla between the pair
-    tuple(sorted(( 7,  8))): 3,
-    tuple(sorted(( 1,  5))): 9,
-    tuple(sorted(( 2,  6))): 15,
-    tuple(sorted((10, 12))): 21,
+    # G-layer / right-diagonal: use upper-right outer ancilla
+    tuple(sorted(( 7,  8))): 17,
+    tuple(sorted(( 1,  5))):  3,
+    tuple(sorted(( 2,  6))):  5,
+    tuple(sorted((10, 12))): 18,
 
-    # F-layer (vertical, same column): middle ancilla between the pair
-    tuple(sorted((11,  4))): 7,
-    tuple(sorted(( 3,  9))): 19,
-    tuple(sorted(( 8,  1))): 5,
-    tuple(sorted(( 2, 10))): 17,
-    tuple(sorted(( 7,  5))): 9,
-    tuple(sorted(( 6, 12))): 21,
+    # F-layer / vertical same-column: middle ancilla between the pair
+    tuple(sorted((11,  4))):  9,
+    tuple(sorted(( 3,  9))): 20,
+    tuple(sorted(( 8,  1))): 10,
+    tuple(sorted(( 2, 10))): 13,
+    tuple(sorted(( 7,  5))):  3,
+    tuple(sorted(( 6, 12))): 18,
 
-    # E-layer (vertical, same column, skip one): middle ancilla
-    tuple(sorted(( 4,  3))): 13,
-    tuple(sorted(( 1,  2))): 11,
-    tuple(sorted(( 5,  6))): 15,
+    # E-layer / vertical type-2: middle ancilla
+    tuple(sorted(( 4,  3))):  7,
+    tuple(sorted(( 1,  2))):  1,
+    tuple(sorted(( 5,  6))):  5,
 }
 
 # ============================================================
@@ -233,7 +234,7 @@ def grid_edge_to_qiskit_indices(q1_grid, q2_grid):
 
     Example:
         grid_edge_to_qiskit_indices((3,4), (3,5))  # E-layer edge (4,3)
-        # -> (9, 15, 12)  i.e. T10, T16, ancilla T13
+        # -> (7, 13, 6)  i.e. T8, T14, ancilla T7
     """
     q1_logical = GRID_TO_LOGICAL[q1_grid]
     q2_logical = GRID_TO_LOGICAL[q2_grid]
