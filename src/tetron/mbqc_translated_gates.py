@@ -295,8 +295,6 @@ class MBQCTranslatedGates:
         qc.measure(ancilla, c[i + 2])
         qc.h(ancilla)
 
-        qc.reset(ancilla)
-
         P1 = c[i]
         P2 = c[i + 1]
         M  = c[i + 2]
