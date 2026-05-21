@@ -144,7 +144,6 @@ class MBQCTranslatedGates:
         with qc.if_test(expr.logic_not(parity_012)):
             qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
@@ -165,7 +164,6 @@ class MBQCTranslatedGates:
         with qc.if_test(expr.logic_not(parity_012)):
             qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
@@ -189,7 +187,6 @@ class MBQCTranslatedGates:
         with qc.if_test(expr.logic_not(expr.bit_xor(y_par, x12_par))):
             qc.x(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
@@ -214,7 +211,6 @@ class MBQCTranslatedGates:
         with qc.if_test(z_par):
             qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
@@ -239,7 +235,6 @@ class MBQCTranslatedGates:
         with qc.if_test(expr.logic_not(z013_par)):
             qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     # ---------------------------------------------------------------------
