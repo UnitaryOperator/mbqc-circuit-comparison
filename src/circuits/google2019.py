@@ -2,28 +2,32 @@
 circuits/google2019.py
 ----------------------
 Utilities for loading and working with the Google 2019 quantum supremacy
-circuits (Arute et al., Nature 2019).
+circuits (Arute et al., Nature 2019) for the MBQC circuit comparison project.
 
 Google 2019 gate set
 --------------------
-    - CZ  : native two-qubit entangling gate
-    - √X  : single-qubit, = S·H·S  (Clifford)
-    - √Y  : single-qubit, = H·√X·H (Clifford)
-    - √W  : single-qubit, = (√X + √Y) / √2 class (Clifford)
+    - SX   : single-qubit, √X = R_x(π/2)
+    - SY   : single-qubit, √Y = R_y(π/2)
+    - SW   : single-qubit, √W where W is a rotation around the (X+Y)/√2 axis
+    - fSIM : two-qubit entangling gate parameterized by (θ, φ); the native
+             Sycamore two-qubit gate, with per-gate calibrated angles in the
+             supremacy dataset
 
-All gates are Clifford — no T gates, no magic state injection required.
-This means the full circuit is implementable using only parity measurements
-on the tetron array.
+Project scope
+-------------
+We target the 30 published 12-qubit circuits from the Google 2019 Dryad
+dataset, running them on a simulated 8×3 tetron array that reproduces
+Sycamore's rectangular-lattice nearest-neighbor connectivity. Each circuit
+is translated gate-by-gate into MBQC parity-measurement equivalents, then
+decomposed into Qiskit-compatible form for noiseless simulation and XEB /
+LCED benchmarking against Google's published bitstrings.
 
-Target circuits
----------------
-The smallest circuits in the Google 2019 Dryad dataset are 12-qubit circuits.
-For the 4×2 array (8 qubits) we either:
-    (a) use synthesised 8-qubit RCS circuits with the same gate set
-    (b) extract 8-qubit subgraphs from 12-qubit circuits
-Approach TBD — confirm with Ed Chen / Adam Mills.
-
-For the 12×2 array (12 data qubits) we can use the Dryad dataset directly.
+This module contains two kinds of utilities:
+    - Circuit loaders (.qasm via Qiskit, .json via Cirq)
+    - Reference-output loaders for Google's published amplitudes files,
+      which give the noiseless |amp|^2 = p_ideal distribution per circuit
+      and can be used directly for XEB scoring without recomputing the
+      statevector.
 
 References
 ----------
@@ -48,6 +52,10 @@ try:
 except ImportError:
     HAS_QISKIT = False
 
+
+# ---------------------------------------------------------------------------
+# Circuit loaders
+# ---------------------------------------------------------------------------
 
 def load_openqasm(path: str | Path) -> "QuantumCircuit":
     """
@@ -95,6 +103,10 @@ def load_cirq_circuit(path: str | Path) -> "cirq.Circuit":
     return cirq.read_json(json_text=json.dumps(data))
 
 
+# ---------------------------------------------------------------------------
+# Ideal-output helpers
+# ---------------------------------------------------------------------------
+
 def ideal_probabilities(circuit: "QuantumCircuit") -> dict[str, float]:
     """
     Compute ideal output bitstring probabilities using Qiskit Statevector.
@@ -113,11 +125,77 @@ def ideal_probabilities(circuit: "QuantumCircuit") -> dict[str, float]:
     if not HAS_QISKIT:
         raise ImportError("Qiskit is required")
     from qiskit.quantum_info import Statevector
-    import numpy as np
     sv = Statevector.from_instruction(circuit)
     probs = sv.probabilities_dict()
     return probs
 
 
-# TODO: add helper to extract n-qubit subgraph from a larger Sycamore circuit
-# for the 4×2 array validation phase. Confirm approach with mentors first.
+# ---------------------------------------------------------------------------
+# Reference amplitudes (Google's published noiseless output)
+# ---------------------------------------------------------------------------
+
+def load_amplitudes(path: str | Path) -> dict[str, complex]:
+    """
+    Load a Google 2019 amplitudes file into a bitstring → complex map.
+
+    File format
+    -----------
+    One bitstring per line, three whitespace-separated columns:
+        <bitstring>   <real_part>   <imag_part>
+
+    Example line:
+        100001000001    0.0198028199    0.0106442748
+
+    The leftmost character of the bitstring corresponds to whichever qubit
+    Google's serialization put first. We do NOT convert to an integer
+    index here to avoid silently introducing endianness bugs; if you need
+    integer indices, do `int(bitstring, 2)` (or reverse first if your
+    convention has qubit 0 on the right, as Qiskit does).
+
+    Notes
+    -----
+    The file may contain all 2^N bitstrings or only a subset, depending on
+    which variant was published for that circuit. The returned dict
+    reflects whatever was in the file. Downstream code should not assume
+    every bitstring is present.
+
+    Parameters
+    ----------
+    path : str | Path — path to amplitudes_n{N}_m{M}_s{S}_e{E}_pEFGH.txt
+
+    Returns
+    -------
+    dict[str, complex] — bitstring → amplitude
+    """
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(f"Amplitudes file not found: {path}")
+    amplitudes: dict[str, complex] = {}
+    with open(path) as f:
+        for line in f:
+            parts = line.strip().split()
+            if len(parts) != 3:
+                continue
+            bitstring = parts[0]
+            real = float(parts[1])
+            imag = float(parts[2])
+            amplitudes[bitstring] = complex(real, imag)
+    return amplitudes
+
+
+def load_probabilities(path: str | Path) -> dict[str, float]:
+    """
+    Load a Google 2019 amplitudes file and return |amp|² probabilities.
+
+    Convenience wrapper around `load_amplitudes` for the common case of
+    XEB scoring, where the phase information isn't needed.
+
+    Parameters
+    ----------
+    path : str | Path — path to amplitudes_n{N}_m{M}_s{S}_e{E}_pEFGH.txt
+
+    Returns
+    -------
+    dict[str, float] — bitstring → probability
+    """
+    return {bs: abs(amp) ** 2 for bs, amp in load_amplitudes(path).items()}
