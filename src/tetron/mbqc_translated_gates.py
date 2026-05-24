@@ -1,7 +1,18 @@
 """
 mbqc_translated_gates.py
 
+Adds an `apply_pauli_corrections` flag to every gate method. When True
+(default) the gate behaves identically to the original implementation —
+mid-circuit measurements are followed by feed-forward Pauli corrections
+that compensate for the random byproducts of each parity measurement.
+When False, the parity measurements still happen (so the state's
+trajectory is identical up to the corrections), but no compensating
+X/Z is applied to the data qubit. This lets you study what the output
+distribution looks like when the Pauli frame is left uncorrected.
 
+The Rz/S rotations, T/Tdg wrappers in sqrt_W, and the Z1..Z4 rotations
+in gate_two_qubit are gate-definition rotations (not byproduct
+corrections) and are always applied regardless of the flag.
 """
 import numpy as np
 from scipy.linalg import sqrtm
@@ -39,14 +50,18 @@ class MBQCTranslatedGates:
     Measurement-based single- and two-qubit gates.
 
     All single-qubit gate methods have signature
-        gate(qc, ancilla, data, creg, start_idx=0)
+        gate(qc, ancilla, data, creg, start_idx=0, apply_pauli_corrections=True)
     matching TetronSingleQubitGates. All two-qubit gate methods have
     signature
-        gate(qc, control, ancilla, target, creg, start_idx=0[, ...params])
+        gate(qc, control, ancilla, target, creg, start_idx=0[, ...params],
+             apply_pauli_corrections=True)
 
     The number of classical bits consumed by each gate can be queried via
     the *_n_bits class attributes (single-qubit) or via the n_bits_two_qubit
-    helper (two-qubit, which depends on the synthesis).
+    helper (two-qubit, which depends on the synthesis). The bit count
+    does NOT depend on apply_pauli_corrections — the measurements still
+    happen either way; only the conditional X/Z byproduct gates are
+    suppressed when the flag is False.
     """
 
     # ---------------------------------------------------------------------
@@ -58,9 +73,9 @@ class MBQCTranslatedGates:
         'HSH':     4,
         'SH':      5,
         'HS':      5,
-        'sqrt_X':  4,  
-        'sqrt_Y':  9, 
-        'sqrt_W':  4,   
+        'sqrt_X':  4,
+        'sqrt_Y':  9,
+        'sqrt_W':  4,
     }
 
     # classical bits of CNOT
@@ -104,6 +119,10 @@ class MBQCTranslatedGates:
         """
         M^{PQ} with P on ancilla, Q on data, outcome stored in creg[creg_idx].
         pauli_data='I' means a single-qubit measurement on the ancilla.
+
+        This is a pure measurement — it does not depend on the
+        apply_pauli_corrections flag, since it is the source of byproducts,
+        not a correction step.
         """
         cls = MBQCTranslatedGates
         cls._rotate_to_z_basis(qc, ancilla, pauli_ancilla)
@@ -121,14 +140,18 @@ class MBQCTranslatedGates:
         cls._rotate_from_z_basis(qc, ancilla, pauli_ancilla)
 
     # =====================================================================
-    # single-qubit gates 
+    # single-qubit gates
     # =====================================================================
     @staticmethod
-    def gate_H(qc, ancilla, data, creg, start_idx=0):
+    def gate_H(qc, ancilla, data, creg, start_idx=0,
+               apply_pauli_corrections=True):
         """
         Measurements: M^{XI}, M^{ZY}, M^{YI}, M^{XI}
         Correction: parity_012 odd -> X, parity_012 even -> Z
                     (equivalent to Y^{(1+s0 s1 s2)/2} * X)
+
+        If apply_pauli_corrections=False, the measurements still happen
+        but the conditional X/Z byproduct gates are omitted.
         """
         c = creg
         i = start_idx
@@ -138,17 +161,18 @@ class MBQCTranslatedGates:
         cls.measure_parity(qc, ancilla, data, 'Y', 'I', c, i + 2)
         cls.measure_parity(qc, ancilla, data, 'X', 'I', c, i + 3)
 
-        parity_012 = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 2])
-        with qc.if_test(parity_012):
-            qc.x(data)
-        with qc.if_test(expr.logic_not(parity_012)):
-            qc.z(data)
+        if apply_pauli_corrections:
+            parity_012 = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 2])
+            with qc.if_test(parity_012):
+                qc.x(data)
+            with qc.if_test(expr.logic_not(parity_012)):
+                qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
-    def gate_S(qc, ancilla, data, creg, start_idx=0):
+    def gate_S(qc, ancilla, data, creg, start_idx=0,
+               apply_pauli_corrections=True):
         """
         Measurements: M^{XI}, M^{ZZ}, M^{YI}, M^{XI}
         Correction: Z^{(1 + s0 s1 s2)/2}  (apply Z on even parity)
@@ -161,15 +185,16 @@ class MBQCTranslatedGates:
         cls.measure_parity(qc, ancilla, data, 'Y', 'I', c, i + 2)
         cls.measure_parity(qc, ancilla, data, 'X', 'I', c, i + 3)
 
-        parity_012 = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 2])
-        with qc.if_test(expr.logic_not(parity_012)):
-            qc.z(data)
+        if apply_pauli_corrections:
+            parity_012 = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 2])
+            with qc.if_test(expr.logic_not(parity_012)):
+                qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
-    def gate_HSH(qc, ancilla, data, creg, start_idx=0):
+    def gate_HSH(qc, ancilla, data, creg, start_idx=0,
+                 apply_pauli_corrections=True):
         """
         Measurements: M^{XI}, M^{ZZ}, M^{ZY}, M^{XI}
         Correction: Y^{(1 - s0 s3)/2} * X^{(1 + s1 s2)/2}
@@ -182,18 +207,19 @@ class MBQCTranslatedGates:
         cls.measure_parity(qc, ancilla, data, 'Z', 'Y', c, i + 2)
         cls.measure_parity(qc, ancilla, data, 'X', 'I', c, i + 3)
 
-        y_par   = expr.bit_xor(c[i], c[i + 3])
-        x12_par = expr.bit_xor(c[i + 1], c[i + 2])
-        with qc.if_test(y_par):
-            qc.z(data)
-        with qc.if_test(expr.logic_not(expr.bit_xor(y_par, x12_par))):
-            qc.x(data)
+        if apply_pauli_corrections:
+            y_par   = expr.bit_xor(c[i], c[i + 3])
+            x12_par = expr.bit_xor(c[i + 1], c[i + 2])
+            with qc.if_test(y_par):
+                qc.z(data)
+            with qc.if_test(expr.logic_not(expr.bit_xor(y_par, x12_par))):
+                qc.x(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
-    def gate_SH(qc, ancilla, data, creg, start_idx=0):
+    def gate_SH(qc, ancilla, data, creg, start_idx=0,
+                apply_pauli_corrections=True):
         """
         Measurements: M^{XI}, M^{ZZ}, M^{ZY}, M^{YI}, M^{XI}
         Correction: Y^{(1 - s0 s2 s3)/2} * Z^{(1 - s1 s2)/2}
@@ -207,18 +233,19 @@ class MBQCTranslatedGates:
         cls.measure_parity(qc, ancilla, data, 'Y', 'I', c, i + 3)
         cls.measure_parity(qc, ancilla, data, 'X', 'I', c, i + 4)
 
-        y_par = expr.bit_xor(expr.bit_xor(c[i], c[i + 2]), c[i + 3])
-        z_par = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 3])
-        with qc.if_test(y_par):
-            qc.x(data)
-        with qc.if_test(z_par):
-            qc.z(data)
+        if apply_pauli_corrections:
+            y_par = expr.bit_xor(expr.bit_xor(c[i], c[i + 2]), c[i + 3])
+            z_par = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 3])
+            with qc.if_test(y_par):
+                qc.x(data)
+            with qc.if_test(z_par):
+                qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     @staticmethod
-    def gate_HS(qc, ancilla, data, creg, start_idx=0):
+    def gate_HS(qc, ancilla, data, creg, start_idx=0,
+                apply_pauli_corrections=True):
         """
         Measurements: M^{XI}, M^{ZY}, M^{ZZ}, M^{YI}, M^{XI}
         Correction: X^{(1 + s1 s2)/2} * Z^{(1 + s0 s1 s3)/2}
@@ -232,39 +259,57 @@ class MBQCTranslatedGates:
         cls.measure_parity(qc, ancilla, data, 'Y', 'I', c, i + 3)
         cls.measure_parity(qc, ancilla, data, 'X', 'I', c, i + 4)
 
-        x12_par  = expr.bit_xor(c[i + 1], c[i + 2])
-        z013_par = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 3])
-        with qc.if_test(expr.logic_not(x12_par)):
-            qc.x(data)
-        with qc.if_test(expr.logic_not(z013_par)):
-            qc.z(data)
+        if apply_pauli_corrections:
+            x12_par  = expr.bit_xor(c[i + 1], c[i + 2])
+            z013_par = expr.bit_xor(expr.bit_xor(c[i], c[i + 1]), c[i + 3])
+            with qc.if_test(expr.logic_not(x12_par)):
+                qc.x(data)
+            with qc.if_test(expr.logic_not(z013_par)):
+                qc.z(data)
 
-        qc.reset(ancilla)
         return qc
 
     # ---------------------------------------------------------------------
     # supremacy single-qubit gates
     # ---------------------------------------------------------------------
     @staticmethod
-    def gate_sqrt_X(qc, ancilla, data, creg, start_idx=0):
+    def gate_sqrt_X(qc, ancilla, data, creg, start_idx=0,
+                    apply_pauli_corrections=True):
         """sqrt(X) = HSH. 4 measurements."""
-        return MBQCTranslatedGates.gate_HSH(qc, ancilla, data, creg, start_idx)
+        return MBQCTranslatedGates.gate_HSH(
+            qc, ancilla, data, creg, start_idx,
+            apply_pauli_corrections=apply_pauli_corrections,
+        )
 
     @staticmethod
-    def gate_sqrt_Y(qc, ancilla, data, creg, start_idx=0):
+    def gate_sqrt_Y(qc, ancilla, data, creg, start_idx=0,
+                    apply_pauli_corrections=True):
         """sqrt(Y) = HSS = (HS) * S. 9 measurements (4 + 5)."""
-        MBQCTranslatedGates.gate_S(qc, ancilla, data, creg, start_idx)
-        MBQCTranslatedGates.gate_HS(qc, ancilla, data, creg, start_idx + 4)
+        MBQCTranslatedGates.gate_S(
+            qc, ancilla, data, creg, start_idx,
+            apply_pauli_corrections=apply_pauli_corrections,
+        )
+        MBQCTranslatedGates.gate_HS(
+            qc, ancilla, data, creg, start_idx + 4,
+            apply_pauli_corrections=apply_pauli_corrections,
+        )
         return qc
 
     @staticmethod
-    def gate_sqrt_W(qc, ancilla, data, creg, start_idx=0):
+    def gate_sqrt_W(qc, ancilla, data, creg, start_idx=0,
+                    apply_pauli_corrections=True):
         """
         sqrt(W) with W = (X+Y)/sqrt(2), implemented as T * sqrt(X) * T_dag.
         T is treated as directly available (T-state via MZMs). 4 measurements.
+
+        The T and Tdg are gate-definition rotations (not Pauli byproduct
+        corrections) and are always applied.
         """
         qc.tdg(data)
-        MBQCTranslatedGates.gate_HSH(qc, ancilla, data, creg, start_idx)
+        MBQCTranslatedGates.gate_HSH(
+            qc, ancilla, data, creg, start_idx,
+            apply_pauli_corrections=apply_pauli_corrections,
+        )
         qc.t(data)
         return qc
 
@@ -272,7 +317,8 @@ class MBQCTranslatedGates:
     # CNOT via three single-qubit measurements
     # =====================================================================
     @staticmethod
-    def gate_CNOT(qc, control, ancilla, target, creg, start_idx=0):
+    def gate_CNOT(qc, control, ancilla, target, creg, start_idx=0,
+                  apply_pauli_corrections=True):
         """
         Measurement-based CNOT from control -> target using a shared ancilla.
 
@@ -300,21 +346,20 @@ class MBQCTranslatedGates:
         qc.measure(ancilla, c[i + 2])
         qc.h(ancilla)
 
-        qc.reset(ancilla)
+        if apply_pauli_corrections:
+            P1 = c[i]
+            P2 = c[i + 1]
+            M  = c[i + 2]
 
-        P1 = c[i]
-        P2 = c[i + 1]
-        M  = c[i + 2]
-
-        with qc.if_test(expr.bit_xor(P1, M)):
-            qc.x(target)
-        with qc.if_test((P2, 1)):
-            qc.z(control)
+            with qc.if_test(expr.bit_xor(P1, M)):
+                qc.x(target)
+            with qc.if_test((P2, 1)):
+                qc.z(control)
 
         return qc
 
     # =====================================================================
-    # two-qubit fSim gate 
+    # two-qubit fSim gate
     # =====================================================================
     @staticmethod
     def _apply_rz_or_s(qc, qubit, angle):
@@ -379,14 +424,14 @@ class MBQCTranslatedGates:
                     if name == 'sx':
                         n += cls.N_BITS['sqrt_X']
                     elif name == 'x':
-                        n += 2 * cls.N_BITS['sqrt_X']  
+                        n += 2 * cls.N_BITS['sqrt_X']
         n += len(cx_dirs) * cls.CNOT_N_BITS
         return n
 
     @staticmethod
     def gate_two_qubit(qc, control, ancilla, target, creg,
                        theta, phi, Z1=0.0, Z2=0.0, Z3=0.0, Z4=0.0,
-                       start_idx=0):
+                       start_idx=0, apply_pauli_corrections=True):
         """
         Generic two-qubit gate Rz(Z3)_c Rz(Z4)_t * fSim(theta, phi) * Rz(Z1)_c Rz(Z2)_t.
 
@@ -396,7 +441,12 @@ class MBQCTranslatedGates:
 
         The Z1..Z4 wrappers are convenient when reproducing Cirq-style FSim
         moments that absorb arbitrary single-qubit Z rotations on either side.
-        Set them all to 0 for a bare fSim.
+        Set them all to 0 for a bare fSim. These Rz rotations are gate-
+        definition rotations and are always applied regardless of
+        apply_pauli_corrections.
+
+        When apply_pauli_corrections=False, the byproduct X/Z corrections
+        inside every internal gate_sqrt_X and gate_CNOT call are suppressed.
         """
         cls = MBQCTranslatedGates
 
@@ -415,21 +465,36 @@ class MBQCTranslatedGates:
                     if name == 'rz':
                         cls._apply_rz_or_s(qc, wire, angle)
                     elif name == 'sx':
-                        cls.gate_sqrt_X(qc, ancilla, wire, creg, start_idx=idx)
+                        cls.gate_sqrt_X(
+                            qc, ancilla, wire, creg, start_idx=idx,
+                            apply_pauli_corrections=apply_pauli_corrections,
+                        )
                         idx += cls.N_BITS['sqrt_X']
                     elif name == 'x':
-                        cls.gate_sqrt_X(qc, ancilla, wire, creg, start_idx=idx)
+                        cls.gate_sqrt_X(
+                            qc, ancilla, wire, creg, start_idx=idx,
+                            apply_pauli_corrections=apply_pauli_corrections,
+                        )
                         idx += cls.N_BITS['sqrt_X']
-                        cls.gate_sqrt_X(qc, ancilla, wire, creg, start_idx=idx)
+                        cls.gate_sqrt_X(
+                            qc, ancilla, wire, creg, start_idx=idx,
+                            apply_pauli_corrections=apply_pauli_corrections,
+                        )
                         idx += cls.N_BITS['sqrt_X']
 
             # CX between the data qubits (with the correct direction)
             if layer < 3:
                 ctrl_idx, _ = cx_dirs[layer]
                 if ctrl_idx == 0:
-                    cls.gate_CNOT(qc, control, ancilla, target, creg, start_idx=idx)
+                    cls.gate_CNOT(
+                        qc, control, ancilla, target, creg, start_idx=idx,
+                        apply_pauli_corrections=apply_pauli_corrections,
+                    )
                 else:
-                    cls.gate_CNOT(qc, target, ancilla, control, creg, start_idx=idx)
+                    cls.gate_CNOT(
+                        qc, target, ancilla, control, creg, start_idx=idx,
+                        apply_pauli_corrections=apply_pauli_corrections,
+                    )
                 idx += cls.CNOT_N_BITS
 
         qc.rz(Z3, control)
