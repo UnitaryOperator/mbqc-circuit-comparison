@@ -383,7 +383,7 @@ class MBQCTranslatedGates:
         decomposer = TwoQubitBasisDecomposer(CXGate(), euler_basis='ZSX')
         synth = decomposer(U_target)
         synth = transpile(synth, basis_gates=['rz', 'sx', 'x', 'cx'],
-                          optimization_level=3)
+                          optimization_level=3, seed_transpiler=20260709)
 
         blocks = []
         cx_dirs = []
