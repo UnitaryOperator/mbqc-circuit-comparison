@@ -39,7 +39,8 @@ Pauli-frame tracking rather than pulsed unitary gates. This project:
 | `google_53qubits_circuit/` | Google's 53-qubit circuit files (used for the Clifford-only scaling checks). |
 | `data/google_amplitudes/` | Google's published output amplitudes for the verifiable 12-qubit instances. |
 | `tests/` | Unit tests for the parity and Pauli-frame primitives. |
-| `*.ipynb` (root) | Exploratory and demonstration notebooks (see note below). |
+| `notebooks/` | Maintained, paper-referenced notebooks (equivalence check, Pauli-frame study). |
+| `notebooks/exploratory/` | Development notebooks retained for reference. |
 
 ## Installation
 
@@ -71,14 +72,13 @@ guide.
 
 ## Notebooks
 
-The Jupyter notebooks in the repository root and `src/tetron/` are exploratory
-and development notebooks from the course project that produced this work. The
-maintained, paper-referenced entry points are
-`google12_tetron_vs_google_amplitudes_statevector_v2.ipynb` (single-instance
-equivalence check) and `src/tetron/pauli_frame_correction_study.ipynb`
-(Pauli-frame analysis). The remaining notebooks are retained for reference and
-may not reflect the final pipeline; the scripts in `analysis/` are the
-authoritative reproduction path.
+Maintained, paper-referenced notebooks live in [`notebooks/`](notebooks/) —
+launch Jupyter from that directory so relative paths resolve. The primary
+entry points are `google12_tetron_vs_google_amplitudes_statevector_v2.ipynb`
+(single-instance equivalence check) and `pauli_frame_correction_study.ipynb`
+(Pauli-frame analysis). Earlier development notebooks are in
+[`notebooks/exploratory/`](notebooks/exploratory/). For batch reproduction, the
+scripts in `analysis/` are the authoritative path.
 
 ## Authors
 
