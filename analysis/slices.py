@@ -49,7 +49,8 @@ if MODE == 'sweep':
         qc_c = S.mbqc_circuit(steps, bits, True)
         sv_c, _ = S.run_mbqc(qc_c, seed=1, want_sv=True)
         F_int = S.subsys_fid(sv_c, sv_i)
-        amp = f"' + _os.path.join(_REPO, 'data', 'google_amplitudes') + '/amplitudes_n12_m14_{name.replace('n12_m14_','')}_pEFGH.txt"
+        amp = _os.path.join(_REPO, 'data', 'google_amplitudes',
+                            f"amplitudes_n12_m14_{name.replace('n12_m14_','')}_pEFGH.txt")
         F_pub = S.subsys_fid(sv_c, S.load_pub_amps(amp)) if os.path.exists(amp) else ''
         qc_u = S.mbqc_circuit(steps, bits, False)
         sv_u, ub = S.run_mbqc(qc_u, seed=2, want_sv=True)

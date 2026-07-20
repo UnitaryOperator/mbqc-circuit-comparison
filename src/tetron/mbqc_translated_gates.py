@@ -362,17 +362,31 @@ class MBQCTranslatedGates:
     # two-qubit fSim gate
     # =====================================================================
     @staticmethod
-    def _apply_rz_or_s(qc, qubit, angle):
-        """Rz(angle) to Clifford S^k when angle is a multiple of pi/2."""
+    def _apply_rz_or_s(qc, qubit, angle, ancilla=None, creg=None, start_idx=0,
+                       apply_pauli_corrections=True):
+        """Apply Rz(angle) on `qubit`. When the angle is a multiple of pi/2 the
+        rotation is a Clifford S^k; each S is realized as the measurement-based
+        gate_S sequence (consuming N_BITS['S'] classical bits per S), so that no
+        Clifford is applied as a bare unitary. Non-Clifford angles are applied
+        directly as Rz (the designated non-Clifford diagonal primitive).
+
+        Returns the number of classical bits consumed (0 for the non-Clifford
+        branch, k_mod * N_BITS['S'] for the Clifford branch).
+        """
+        cls = MBQCTranslatedGates
         theta = (angle + np.pi) % (2 * np.pi) - np.pi
         k = round(theta / (np.pi / 2))
         if abs(theta - k * (np.pi / 2)) < 1e-3:
             k_mod = k % 4
+            idx = start_idx
             for _ in range(k_mod):
-                qc.s(qubit)
+                cls.gate_S(qc, ancilla, qubit, creg, start_idx=idx,
+                           apply_pauli_corrections=apply_pauli_corrections)
+                idx += cls.N_BITS['S']
+            return k_mod * cls.N_BITS['S']
         else:
             qc.rz(theta, qubit)
-        return qc
+            return 0
 
     @staticmethod
     def _zsx_blocks_and_cx(theta, phi):
@@ -420,11 +434,19 @@ class MBQCTranslatedGates:
         n = 0
         for block in blocks:
             for q in (0, 1):
-                for name, _ in block[q]:
+                for name, angle in block[q]:
                     if name == 'sx':
                         n += cls.N_BITS['sqrt_X']
                     elif name == 'x':
                         n += 2 * cls.N_BITS['sqrt_X']
+                    elif name == 'rz':
+                        # Clifford (multiple of pi/2) rz's are realized as
+                        # measurement-based S^k; non-Clifford rz's are applied
+                        # directly and consume no measurement bits.
+                        theta = (angle + np.pi) % (2 * np.pi) - np.pi
+                        k = round(theta / (np.pi / 2))
+                        if abs(theta - k * (np.pi / 2)) < 1e-3:
+                            n += (k % 4) * cls.N_BITS['S']
         n += len(cx_dirs) * cls.CNOT_N_BITS
         return n
 
@@ -463,7 +485,11 @@ class MBQCTranslatedGates:
                 wire = control if q_local == 0 else target
                 for name, angle in block[q_local]:
                     if name == 'rz':
-                        cls._apply_rz_or_s(qc, wire, angle)
+                        idx += cls._apply_rz_or_s(
+                            qc, wire, angle, ancilla=ancilla, creg=creg,
+                            start_idx=idx,
+                            apply_pauli_corrections=apply_pauli_corrections,
+                        )
                     elif name == 'sx':
                         cls.gate_sqrt_X(
                             qc, ancilla, wire, creg, start_idx=idx,

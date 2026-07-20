@@ -14,6 +14,7 @@ import os as _os, sys as _sys
 _REPO = _os.path.dirname(_os.path.dirname(_os.path.abspath(__file__)))
 _sys.path.insert(0, _os.path.join(_REPO, 'src', 'tetron'))
 _sys.path.insert(0, _os.path.join(_REPO, 'src'))
+_sys.path.insert(0, _os.path.join(_REPO, 'analysis'))
 
 import sys, os, glob, importlib.util, time, csv, functools
 import numpy as np
@@ -121,12 +122,20 @@ def counts_of(steps):
     R = sum(1 for s in steps if s[0] == 'DIAG')
     bits = sum(s[3] for s in steps if s[0] == 'MB') + 3*sum(1 for s in steps if s[0] == 'MB_CNOT')
     m2 = 0; m1 = 0
+    n_snapped_S = 0
     for s in steps:
         if s[0] == 'MB':
             m2 += {'SX': 2, 'S': 1, 'HS': 2}[s[1]]
             m1 += {'SX': 2, 'S': 3, 'HS': 3}[s[1]]
         elif s[0] == 'MB_CNOT':
             m2 += 2; m1 += 1
+        elif s[0] == 'CLIFF_DIAG':
+            # snapped Clifford S^k, realized measurement-based (gate_S): each S is
+            # 1 joint parity + 3 single-qubit measurements = 4 recorded bits.
+            n_snapped_S += s[1]
+    m2 += n_snapped_S * 1
+    m1 += n_snapped_S * 3
+    bits += n_snapped_S * 4
     return R, bits, m2, m1
 
 def ideal_circuit(steps, flips=None):
@@ -159,7 +168,10 @@ def mbqc_circuit(steps, nbits, corrections):
             G.gate_CNOT(qc, c, ANC, t, cr, idx, apply_pauli_corrections=corrections)
             idx += 3
         elif st[0] == 'CLIFF_DIAG':
-            for _ in range(st[1]): qc.s(st[2])
+            # snapped Clifford S^k realized measurement-based (matches library)
+            for _ in range(st[1]):
+                G.gate_S(qc, ANC, st[2], cr, idx, apply_pauli_corrections=corrections)
+                idx += 4
         else:
             kind, q, ang = st[1], st[2], st[3]
             if kind == 'rz': qc.rz(ang, q)
@@ -206,11 +218,16 @@ def track(steps, bits):
             x[t] ^= x[c]; z[c] ^= z[t]
             x[t] ^= b[0]^b[2]; z[c] ^= b[1]
         elif st[0] == 'CLIFF_DIAG':
+            # snapped Clifford S^k realized measurement-based (gate_S): each S
+            # consumes 4 bits, conjugates the frame by S, and folds in the same
+            # byproduct as an MB 'S' block.
             k, q = st[1], st[2]
             for _ in range(k):
-                (xX, zX), (xZ, zZ) = CONJ['S1']
+                b = bits[ptr:ptr+4]; ptr += 4
+                (xX, zX), (xZ, zZ) = CONJ['S']
                 nx = (x[q] & xX) ^ (z[q] & xZ); nz = (x[q] & zX) ^ (z[q] & zZ)
                 x[q], z[q] = nx, nz
+                x[q] ^= 0; z[q] ^= 1 ^ (b[0]^b[1]^b[2])
         else:
             flips.append(-1 if x[st[2]] else 1)
     return flips, x.copy()
